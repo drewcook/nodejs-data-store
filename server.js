@@ -8,6 +8,9 @@ server.disable('x-powered-by')
 const { setupLogging, logger } = require('./startup/logging')
 setupLogging(server)
 
+// Setup the routes
+require('./startup/routes')(server)
+
 // The tests exercise the server by requiring it as a module,
 // rather than running it in a separate process and listening on a port
 module.exports = server
