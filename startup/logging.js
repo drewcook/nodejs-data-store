@@ -1,5 +1,6 @@
 const morgan = require('morgan')
 const winston = require('winston')
+require('express-async-errors')
 
 const defaultTransports = [
 	// - Write all logs with level `error` and below to `error.log`
