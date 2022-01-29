@@ -32,6 +32,8 @@ const cleanTestDirectory = () => {
 describe('data-storage-api-node', () => {
 	beforeAll(cleanTestDirectory)
 
+	afterAll(cleanTestDirectory)
+
 	test('PUT', async () => {
 		const putResult = await supertest(server)
 			.put('/data/cats')
