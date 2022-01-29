@@ -1,4 +1,4 @@
-# Coding Exercise: Data Storage API (Node.js) :turtle::rocket:
+# Coding Exercise: Data Storage API (Node.js) :turtle::rocket
 
 Implement a small HTTP service in Node.js to store objects organized by repository.
 Clients of this service should be able to `GET`, `PUT`, and `DELETE` objects.
@@ -31,10 +31,10 @@ We respect your time, and don't expect you to spend more time than you want to c
 
 This exercise will be graded by two GitHub engineers, picked at random from a pool of engineers who have experience with writing Node.js. There is a fixed criteria for assessing a PR, which requires an 85% score to pass. Engineers can award points in the following areas:
 
- - **Communication**: Providing a thorough PR description that describes trade-offs and limitations.
- - **Functionality**: Implementing and testing the requirements (see above).
- - **Implementation**: Writing idiomatic and tidy code that is free of anti-patterns.
- - **Bonus Points**: A small amount of bonus points can be awarded for extra-ordinary code.
+* **Communication**: Providing a thorough PR description that describes trade-offs and limitations.
+* **Functionality**: Implementing and testing the requirements (see above).
+* **Implementation**: Writing idiomatic and tidy code that is free of anti-patterns.
+* **Bonus Points**: A small amount of bonus points can be awarded for extra-ordinary code.
 
 ## API
 

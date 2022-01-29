@@ -1,5 +1,15 @@
+# Environment Variables
 .env
+
+# Configuration
 .npmrc
+
+# Artifacts
 coverage
+
+# Dependencies
 node_modules
 package-lock.json
+
+# OS Files
+.DS_Store
