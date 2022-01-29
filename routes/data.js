@@ -1,6 +1,7 @@
 const express = require('express')
 const crypto = require('crypto')
 const _data = require('../lib/JSONDataStore')
+const { checkIfValidSHA256 } = require('../lib/helpers')
 const router = express.Router()
 
 /**
@@ -30,6 +31,32 @@ router.put('/:repo', (req, res) => {
 			.status(500)
 			.json({ message: 'Error creating new repo object - Failed to hash the given payload' })
 	}
+})
+
+/**
+ * GET object
+ */
+router.get('/:repo/:oid', (req, res) => {
+	const { repo: dir, oid } = req.params
+
+	// Validation - ensure the oid is a valid hash
+	if (!checkIfValidSHA256(oid)) {
+		// NOTE: Typically 400 is the correct code to return for a bad response, but the original test expects a 404.
+		// I don't want to alter the original test, as based off of the requirements.
+		// Since my implementation is expecting hashes for OIDs, I'd have two tests, one for invalid hashes
+		// and one for a hash that doesn't exists, and expect 400 and 404 respectively.
+		res.status(404).json({ message: 'Invalid parameters - OID must be a valid SHA256 hash' })
+		return
+	}
+
+	// Read the file from our datastore
+	_data.read(dir, oid, (err, data) => {
+		if (!err && data) {
+			res.status(200).json(data)
+		} else {
+			res.status(404).json({ message: `Error reading repo object - ${err.message}` })
+		}
+	})
 })
 
 module.exports = router

@@ -3,8 +3,34 @@
 
 const supertest = require('supertest')
 const server = require('./server.js')
+const fs = require('fs')
+const path = require('path')
+
+const cleanTestDirectory = () => {
+	const testDirPath = path.join(__dirname, '/.data/cats')
+	if (fs.existsSync(testDirPath)) {
+		const files = fs.readdirSync(testDirPath)
+
+		if (files.length > 0) {
+			files.forEach(function (filename) {
+				if (fs.statSync(testDirPath + '/' + filename).isDirectory()) {
+					removeDir(testDirPath + '/' + filename)
+				} else {
+					fs.unlinkSync(testDirPath + '/' + filename)
+				}
+			})
+			fs.rmdirSync(testDirPath)
+		} else {
+			fs.rmdirSync(testDirPath)
+		}
+	} else {
+		console.log('Directory path not found.')
+	}
+}
 
 describe('data-storage-api-node', () => {
+	beforeAll(cleanTestDirectory)
+
 	test('PUT', async () => {
 		const putResult = await supertest(server)
 			.put('/data/cats')
