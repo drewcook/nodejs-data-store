@@ -12,7 +12,9 @@
     "test-watch": "jest --watch --notify --notifyMode=change test.js"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "winston": "^3.5.0"
   },
   "devDependencies": {
     "eslint": "^8.8.0",
