@@ -5,6 +5,7 @@ const supertest = require('supertest')
 const server = require('./server.js')
 const fs = require('fs')
 const path = require('path')
+const { logger } = require('./startup/logging')
 
 const cleanTestDirectory = () => {
 	const testDirPath = path.join(__dirname, '/.data/cats')
@@ -24,7 +25,7 @@ const cleanTestDirectory = () => {
 			fs.rmdirSync(testDirPath)
 		}
 	} else {
-		console.log('Directory path not found.')
+		logger.warn('Directory path not found.')
 	}
 }
 

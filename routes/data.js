@@ -1,7 +1,7 @@
 const express = require('express')
 const crypto = require('crypto')
 const _data = require('../lib/JSONDataStore')
-const { checkIfValidSHA256 } = require('../lib/helpers')
+const validateOid = require('../middleware/validateOid')
 const router = express.Router()
 
 /**
@@ -9,8 +9,18 @@ const router = express.Router()
  */
 router.put('/:repo', (req, res) => {
 	const dir = req.params.repo
-	// TODO: Validation for declarative params to support
 	const payload = req.body
+
+	// Validation to expect at least 'name' field
+	const name =
+		typeof payload.name === 'string' && payload.name.trim().length > 0 ? payload.name.trim() : false
+
+	if (!name) {
+		res.status(400).json({
+			message: 'Invalid parameters - Expect to have at least a "name" field in the payload',
+		})
+		return
+	}
 
 	// Prevent duplicate data from being written by hashing the payload
 	const hash = crypto.createHash('sha256').update(JSON.stringify(payload)).digest('hex')
@@ -34,19 +44,10 @@ router.put('/:repo', (req, res) => {
 
 /**
  * GET object
+ * Validates OID via middleware
  */
-router.get('/:repo/:oid', (req, res) => {
+router.get('/:repo/:oid', validateOid, (req, res) => {
 	const { repo: dir, oid } = req.params
-
-	// Validation - ensure the oid is a valid hash
-	if (!checkIfValidSHA256(oid)) {
-		// NOTE: Typically 400 is the correct code to return for a bad response, but the original test expects a 404.
-		// I don't want to alter the original test, as based off of the requirements.
-		// Since my implementation is expecting hashes for OIDs, I'd have two tests, one for invalid hashes
-		// and one for a hash that doesn't exists, and expect 400 and 404 respectively.
-		res.status(404).json({ message: 'Invalid parameters - OID must be a valid SHA256 hash' })
-		return
-	}
 
 	// Read the file from our datastore
 	_data.read(dir, oid, (err, data) => {
@@ -61,19 +62,10 @@ router.get('/:repo/:oid', (req, res) => {
 
 /**
  * DELETE object
+ * * Validates OID via middleware
  */
-router.delete('/:repo/:oid', (req, res) => {
+router.delete('/:repo/:oid', validateOid, (req, res) => {
 	const { repo: dir, oid } = req.params
-
-	// Validation - ensure the oid is a valid hash
-	if (!checkIfValidSHA256(oid)) {
-		// NOTE: Typically 400 is the correct code to return for a bad response, but the original test expects a 404.
-		// I don't want to alter the original test, as based off of the requirements.
-		// Since my implementation is expecting hashes for OIDs, I'd have two tests, one for invalid hashes
-		// and one for a hash that doesn't exists, and expect 400 and 404 respectively.
-		res.status(404).json({ message: 'Invalid parameters - OID must be a valid SHA256 hash' })
-		return
-	}
 
 	// Check that the object exists in our data store first
 	_data.read(dir, oid, (err, data) => {
