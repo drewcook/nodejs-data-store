@@ -5,6 +5,7 @@
 .npmrc
 
 # Artifacts
+.data/*
 coverage
 
 # Dependencies
