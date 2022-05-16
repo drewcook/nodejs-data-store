@@ -1,4 +1,4 @@
-# Data Storage API (Node.js) :turtle::rocket
+# Data Storage API (Node.js) :turtle::rocket:
 
 * This data store is a small HTTP service in Node.js to store objects organized by repository.
 * Clients of this service should be able to `GET`, `PUT`, and `DELETE` objects.
