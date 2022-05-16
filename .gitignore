@@ -1,5 +1,20 @@
+# Environment Variables
 .env
+
+# Configuration
 .npmrc
+
+# Artifacts
+.data/*
+!.data/README.md
 coverage
+
+# Dependencies
 node_modules
 package-lock.json
+
+# OS Files
+.DS_Store
+
+# Log Files
+*.log
